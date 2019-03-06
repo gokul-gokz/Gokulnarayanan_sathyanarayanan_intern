@@ -1,4 +1,4 @@
-int64 id
-int64[] goal
+int32 id
+int32[] goal
 ---
 bool success

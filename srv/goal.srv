@@ -1,0 +1,4 @@
+int32 goal_x
+int32 goal_y
+---
+bool success

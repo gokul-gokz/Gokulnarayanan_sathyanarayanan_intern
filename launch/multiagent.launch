@@ -1,0 +1,9 @@
+<launch>
+<node pkg="multi_agent_planning" type="agent" name="agent" ns="agent1">
+<rosparam command="load" file="$(find multi_agent_planning)/config/agent1_info.yaml"/>
+</node>
+
+<node pkg="multi_agent_planning" type="agent" name="agent"  ns="agent2">
+<rosparam command="load" file="$(find multi_agent_planning)/config/agent2_info.yaml"/>
+</node>
+</launch>

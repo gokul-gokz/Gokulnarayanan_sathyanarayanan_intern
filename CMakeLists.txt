@@ -56,7 +56,8 @@ find_package(catkin REQUIRED COMPONENTS
 
 add_service_files(
    FILES
-   plan_request.srv)   
+   plan_request.srv
+   goal.srv)   
 
 
 ## Generate actions in the 'action' folder
@@ -137,7 +138,7 @@ include_directories(
 
  add_executable(temp1 src/temp.cpp)
  add_executable(temp src/planner.cpp)
-
+ add_executable(agent src/agent.cpp)
 
 ## Rename C++ executable without prefix
 ## The above recommended prefix causes long target names, the following renames the
@@ -156,12 +157,15 @@ include_directories(
  #)
 
  add_dependencies(temp ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
+ add_dependencies(agent ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
 
 ## Specify libraries to link a library or executable target against
  target_link_libraries(temp
    ${catkin_LIBRARIES}
  )
-
+ target_link_libraries(agent
+   ${catkin_LIBRARIES}
+ )
 
 #############
 ## Install ##

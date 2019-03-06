@@ -215,8 +215,7 @@ void Decentralized_planner::initializePublisher()
 {
     ROS_INFO("Initializing Publishers");
     robot_state_publisher = nh_.advertise<std_msgs::Int32MultiArray>("agent_feedback", 1, true); 
-    //add more publishers, as needed
-    // note: COULD make minimal_publisher_ a public member function, if want to use it within "main()"
+    
 }
 
 void Decentralized_planner::positionCallback(const std_msgs::Int32MultiArray::ConstPtr& array)
@@ -257,11 +256,11 @@ int main(int argc, char **argv)
 	Decentralized_planner p1(&n);
 	while(ros::ok())
 	{
-		std_msgs::Int32MultiArray position;
-		position.data.clear();
-		position.data.push_back(1);
-		position.data.push_back(2);
-		p1.robot_state_publisher.publish(position);
+		// std_msgs::Int32MultiArray position;
+		// position.data.clear();
+		// position.data.push_back(1);
+		// position.data.push_back(2);
+		// p1.robot_state_publisher.publish(position);
 		ros::spinOnce();
 		sleep(2); 
 	}
