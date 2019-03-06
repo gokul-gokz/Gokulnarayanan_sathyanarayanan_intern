@@ -53,9 +53,11 @@ find_package(catkin REQUIRED COMPONENTS
 # )
 
 ## Generate services in the 'srv' folder
+
 add_service_files(
    FILES
    plan_request.srv)   
+
 
 ## Generate actions in the 'action' folder
 # add_action_files(
@@ -65,10 +67,10 @@ add_service_files(
 # )
 
 ## Generate added messages and services with any dependencies listed here
-# generate_messages(
-#   DEPENDENCIES
-#   std_msgs  # Or other packages containing msgs
-# )
+generate_messages(
+  DEPENDENCIES
+  std_msgs  # Or other packages containing msgs
+)
 
 ################################################
 ## Declare ROS dynamic reconfigure parameters ##
@@ -119,8 +121,8 @@ include_directories(
 
 ## Declare a C++ library
 # add_library(${PROJECT_NAME}
-#   src/${PROJECT_NAME}/multi_agent_planning.cpp
-# )
+#    src/node.cpp
+#  )
 
 ## Add cmake target dependencies of the library
 ## as an example, code may need to be generated before libraries
@@ -130,7 +132,12 @@ include_directories(
 ## Declare a C++ executable
 ## With catkin_make all packages are built within a single CMake context
 ## The recommended prefix ensures that target names across packages don't collide
+
 # add_executable(create_roadmap src/roadmap.cpp)
+
+ add_executable(temp1 src/temp.cpp)
+ add_executable(temp src/planner.cpp)
+
 
 ## Rename C++ executable without prefix
 ## The above recommended prefix causes long target names, the following renames the
@@ -140,12 +147,21 @@ include_directories(
 
 ## Add cmake target dependencies of the executable
 ## same as for the library above
+
 #add_dependencies(create_roadmap ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
 
 ## Specify libraries to link a library or executable target against
  #target_link_libraries(create_roadmap
  #  ${catkin_LIBRARIES}
  #)
+
+ add_dependencies(temp ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
+
+## Specify libraries to link a library or executable target against
+ target_link_libraries(temp
+   ${catkin_LIBRARIES}
+ )
+
 
 #############
 ## Install ##
