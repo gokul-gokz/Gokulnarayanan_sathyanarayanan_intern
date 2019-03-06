@@ -1,53 +1,11 @@
 
-#include <stdio.h>
-#include <iostream>
 #include <queue>
-#include <utility>
-#include <cstring>
-#include <cmath>
 #include <array>
 #include "multi_agent_planning/roadmap.hpp"
+#include "multi_agent_planning/node.h"
 
 using namespace std;
 
-class node
-{
-public:
-	// Node Variables
-	int x;
-	int y;
-	double g; //Cost for the distance from start to node
-	double h; //Heuristic cost for the distance from node to goal(Euclidean)
-	double f; //Total cost 
-	int parent_x;
-	int parent_y;
-	
-	node(int x_pos,int y_pos,int p_x,int p_y)
-	{
-		//Initialize the class variables 
-	    x=x_pos;
-	    y=y_pos;
-	    g=0;
-	    h=0;
-	    f=0;
-	    parent_x=p_x;
-	    parent_y=p_y;
-	}
-	
-    void update(int g_p,int e_w,int goal_x,int goal_y)
-    {
-    	//Update the costs of the node  
-        g=g_p+e_w;
-        h=sqrt(pow((x-goal_x),2)+pow((y-goal_y),2)); //Cost based on Euclidean distance
-        f=g+h;
-    }
-
-    //Operator overloading to compare class objects
-	bool operator==(const node& other)const
-	{
-	    return(x==other.x and y==other.y);
-	}
-};
 
 //Function to check whether the goal and start are valid
 bool valid_input(int start_x,int start_y, int goal_x, int goal_y)
@@ -84,7 +42,7 @@ bool operator()(const node& n1,const node& n2)
 
 
 
-int A_star(roadmap r1,int start_x,int start_y, int goal_x, int goal_y)
+vector<array<int,2>> A_star(roadmap r1,int start_x,int start_y, int goal_x, int goal_y)
  {
  	//Get the size of the grid
  	
@@ -156,6 +114,7 @@ int A_star(roadmap r1,int start_x,int start_y, int goal_x, int goal_y)
                  c_y=py;
                  
              }
+             return path;
              
          }
 
@@ -201,6 +160,7 @@ int A_star(roadmap r1,int start_x,int start_y, int goal_x, int goal_y)
 
          
      }
+
 }     
 
      
@@ -211,6 +171,8 @@ int main()
     
    //Create the roadmap
  	roadmap r1;
-    A_star(r1,6,2,7,9);
+ 	vector<array<int,2>> path;
+    path=A_star(r1,6,2,7,9);
+    cout<<path.size();
     return 0;
 }
