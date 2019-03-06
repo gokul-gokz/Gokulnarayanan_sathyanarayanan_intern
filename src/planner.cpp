@@ -227,7 +227,7 @@ void Decentralized_planner::positionCallback(const std_msgs::Int32MultiArray::Co
 	{
 		Arr[i] = *it;
 		i++;
-		cout<<Arr[i];
+		ROS_INFO("%d",Arr[i]);
 	}
 
 	return;
@@ -241,7 +241,8 @@ bool Decentralized_planner::get_plan(multi_agent_planning::plan_request::Request
  vector<array<int,2>> path;
  path=A_star(r1,6,2,7,9);
  cout<<path.size();
- return 0;
+ res.success=true;
+ return true;
 
 }
 
