@@ -3,7 +3,11 @@
 #include <vector>
 #include <list>
 #include <utility>
-#include<array>
+#include <array>
+
+#define SIZE_X 10
+#define SIZE_Y 10
+#define EDGE_W 10 
 
 using namespace std;
 
@@ -13,23 +17,24 @@ private:
 	// Create a vector of vector for representing the adjacency list
 	vector<vector<array<int,3>>>adjList;
 
+
 public:
-	roadmap(int size,int w)
+	roadmap()
 	{
 		list<array<int,2>> connections{{1,0},{0,1},{-1,0},{0,-1}};
-		for(int i=0;i<10;i++)
+		for(int i=0;i<SIZE_Y;i++)
 		{
 			
-			for(int j=0;j<10;j++)
+			for(int j=0;j<SIZE_X;j++)
 			{
 			    vector<array<int,3>> row; 
 				for (auto const& k : connections) 
 				{
 				    int node_position[2]={i+k[0],j+k[1]};
 				    //cout<<node_position[0]<<"'"<<node_position[1];
-    				if(node_position[0]>=0 && node_position[0]<=size-1 && node_position[1]>=0 && node_position[1]<=size-1)
+    				if(node_position[0]>=0 && node_position[0]<=SIZE_X-1 && node_position[1]>=0 && node_position[1]<=SIZE_Y-1)
     				{
-    				  row.push_back({node_position[0],node_position[1],w});
+    				  row.push_back({node_position[1],node_position[0],EDGE_W});
     				}
 				}
 				adjList.push_back(row);
@@ -48,7 +53,7 @@ public:
 			vector<int> x;
 			cout<<endl;
 			for(int j=0;j<adjList[i].size();j++)
-				//cout<<"("<<adjList[i][j][0]<<","<<adjList[i][j][1]<<"),";
+				cout<<"("<<adjList[i][j][0]<<","<<adjList[i][j][1]<<"),";
 				cout<<endl;
 		}	
 	}
