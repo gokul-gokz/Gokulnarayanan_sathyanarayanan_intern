@@ -1,0 +1,3 @@
+int8 id
+int8 current_position_x
+int8 current_position_y

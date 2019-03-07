@@ -2,7 +2,7 @@
 #include "iostream"
 #include <queue>
 #include <array>
-
+#include "multi_agent_planning/robot_state.h"
 #include "multi_agent_planning/plan_request.h"
 #include "multi_agent_planning/roadmap.hpp"
 #include "multi_agent_planning/node.h"
@@ -50,14 +50,14 @@ bool operator()(const node& n1,const node& n2)
 vector<array<int,2>> A_star(roadmap r1,int start_x,int start_y, int goal_x, int goal_y)
  {
  	//Get the size of the grid
- 	
+ 	ROS_INFO("astar called");
 
  	//Check whether the goal and start nodes are valid
  	// if(not(valid_input(int start_x,int start_y,int goal_x,int goal_y)))
  	// 	return 0; 
 
      //Create start and goal node
-     node s1(start_x,start_y,-1,-1);
+ 	 node s1(start_x,start_y,-1,-1);
      node g1(goal_x,goal_y,-1,-1);
      
      //Create a priority queue to store the unexpanded nodes
@@ -174,18 +174,18 @@ private:
 	 ros::NodeHandle nh_;
 	 ros::Subscriber get_start_position;
      ros::ServiceServer Plan_server;
-    
+     double start_pos[3]; 
      vector<array<int,2>> path;
-     int start_pos[2];
+     
 
 
 public:  
 	ros::Publisher robot_state_publisher;   
 	Decentralized_planner(ros::NodeHandle* nodehandle);
-	void initializesubscriber();
+	//void initializesubscriber();
 	void initializeservice();
-	void initializePublisher();
-	void positionCallback(const std_msgs::Int32MultiArray::ConstPtr& array);
+	
+	void positionCallback(const multi_agent_planning::robot_state::ConstPtr & msg);
     //prototype for callback for example service
     bool get_plan(multi_agent_planning::plan_request::Request &req,
 			  multi_agent_planning::plan_request::Response &res);
@@ -194,16 +194,16 @@ public:
 
 Decentralized_planner::Decentralized_planner(ros::NodeHandle* nodehandle):nh_(*nodehandle)
 {
-	initializesubscriber();
+	//initializesubscriber();
 	initializeservice();
-	initializePublisher();
+	
 }
 
-void Decentralized_planner::initializesubscriber()
-{
-	ROS_INFO("Initializing subscriber for robot position");
-	get_start_position=nh_.subscribe("/agent_feedback", 1, &Decentralized_planner::positionCallback,this);
-}
+// void Decentralized_planner::initializesubscriber()
+// {
+// 	ROS_INFO("Initializing subscriber for robot position");
+// 	get_start_position=nh_.subscribe("/agent_feedback", 1, &Decentralized_planner::positionCallback,this);
+// }
 
 void Decentralized_planner::initializeservice()
 {
@@ -211,23 +211,44 @@ void Decentralized_planner::initializeservice()
 	Plan_server=nh_.advertiseService("get_plan",&Decentralized_planner::get_plan,this);
 }
 
-void Decentralized_planner::initializePublisher()
-{
-    ROS_INFO("Initializing Publishers");
-    robot_state_publisher = nh_.advertise<std_msgs::Int32MultiArray>("agent_feedback", 1, true); 
+// void Decentralized_planner::initializePublisher()
+// {
+//     ROS_INFO("Initializing Publishers");
+//     robot_state_publisher = nh_.advertise<std_msgs::Int32MultiArray>("agent_feedback", 1, true); 
     
-}
+// }
+int flag =0;
+void Decentralized_planner::positionCallback(const multi_agent_planning::robot_state::ConstPtr & msg)
+{   
 
-void Decentralized_planner::positionCallback(const std_msgs::Int32MultiArray::ConstPtr& array)
-{
-	int i = 0;
-	int Arr[10];
-	for(std::vector<int>::const_iterator it = array->data.begin(); it != array->data.end(); ++it)
-	{
-		Arr[i] = *it;
-		i++;
-		ROS_INFO("%d",Arr[i]);
-	}
+	// int i=0;
+     ROS_INFO("Subscriber call");
+     
+     if(start_pos[0] == msg->id)
+     {
+	      ROS_INFO("subscriber called");  
+         start_pos[1] = msg->current_position_x;
+         start_pos[2] = msg->current_position_y;
+         ROS_INFO("%ld",start_pos[0]);
+         ROS_INFO("%ld",start_pos[1]);
+         ROS_INFO("%ld",start_pos[2]);
+         
+         flag=1;
+         get_start_position.shutdown();
+        }
+        
+    
+        
+        
+		
+	// 		}
+    // if(start_pos[0]==*array)
+    // {
+    //     start_pos[1]=(*array)+1;
+    //     start_pos[2]=(*array)+2;
+    // }
+
+
 
 	return;
 }
@@ -236,10 +257,25 @@ void Decentralized_planner::positionCallback(const std_msgs::Int32MultiArray::Co
 bool Decentralized_planner::get_plan(multi_agent_planning::plan_request::Request &req,
 			  multi_agent_planning::plan_request::Response &res)
 {
+ ROS_INFO("Planner called");
+
+ 
  roadmap r1;
  vector<array<int,2>> path;
- path=A_star(r1,6,2,7,9);
- cout<<path.size();
+ start_pos[0]=req.id;
+ int i=0;
+ // This condition is set to update the value of the start state and then execute the planner
+ while(i<3)
+ {
+ get_start_position=nh_.subscribe("/agent_feedback", 1000, &Decentralized_planner::positionCallback,this);
+ ros::topic::waitForMessage<multi_agent_planning::robot_state>("/agent_feedback");
+ i++;
+ ros::spinOnce(); 
+ }
+ path=A_star(r1,start_pos[1],start_pos[2],req.goal_x,req.goal_y);
+ flag=0;
+ 
+ // cout<<path.size();
  res.success=true;
  return true;
 
@@ -254,18 +290,7 @@ int main(int argc, char **argv)
 	ros::init(argc,argv,"Decentralized_planner");
 	ros::NodeHandle n;
 	Decentralized_planner p1(&n);
-	while(ros::ok())
-	{
-		// std_msgs::Int32MultiArray position;
-		// position.data.clear();
-		// position.data.push_back(1);
-		// position.data.push_back(2);
-		// p1.robot_state_publisher.publish(position);
-		ros::spinOnce();
-		sleep(2); 
-	}
-	//ros::ServiceServer service=n.advertiseService("get_plan",get_plan);
-
+	ros::spin();
 	
 	
 	return 0;

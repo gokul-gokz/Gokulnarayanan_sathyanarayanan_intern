@@ -1,6 +1,7 @@
 #include "ros/ros.h"
 #include "multi_agent_planning/goal.h"
 #include "multi_agent_planning/plan_request.h"
+#include "multi_agent_planning/robot_state.h"
 #include "std_msgs/Int32MultiArray.h"
 #include "std_msgs/MultiArrayLayout.h"
 #include "std_msgs/MultiArrayDimension.h"
@@ -8,7 +9,7 @@
 
 class agent
 {
-	private:
+	public:
 		ros::NodeHandle nh_;
 		int id;
 		int start_position[2];
@@ -18,7 +19,7 @@ class agent
 		ros::ServiceServer update_goal;
 		ros::ServiceClient request_plan_client;
 
-	public:
+	//public:
 		agent(ros::NodeHandle* nodehandle);
 		ros::Publisher robot_state_publisher;
 		void initialize_robot_statepublisher();
