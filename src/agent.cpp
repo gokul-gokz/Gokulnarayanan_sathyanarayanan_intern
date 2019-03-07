@@ -37,7 +37,9 @@ bool agent::update_agent_goal(multi_agent_planning::goal::Request &req,
 	p_r.request.goal_y=goal_position[1];
 	if (request_plan_client.call(p_r))
   	{
-     ROS_INFO("Goal sent successfully");
+     ROS_ERROR("Goal sent successfully");
+     ROS_ERROR("%f",p_r.response.shortest_path.nodes[1].x);
+     ROS_ERROR("%f",p_r.response.shortest_path.nodes[1].y);
   	}
     else
     {

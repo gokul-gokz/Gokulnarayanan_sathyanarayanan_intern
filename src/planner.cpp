@@ -3,6 +3,7 @@
 #include <queue>
 #include <array>
 #include "multi_agent_planning/Robot_state.h"
+#include "multi_agent_planning/path.h"
 #include "multi_agent_planning/plan_request.h"
 #include "multi_agent_planning/roadmap.hpp"
 #include "multi_agent_planning/node.h"
@@ -45,7 +46,7 @@ bool operator()(const node& n1,const node& n2)
 
 
 
-vector<array<int,2>> A_star(roadmap r1,int start_x,int start_y, int goal_x, int goal_y)
+multi_agent_planning::path A_star(roadmap r1,int start_x,int start_y, int goal_x, int goal_y)
  {
  	//Get the size of the grid
  	ROS_INFO("astar called");
@@ -96,16 +97,22 @@ vector<array<int,2>> A_star(roadmap r1,int start_x,int start_y, int goal_x, int 
          	
          	// Create a vector of 2D array to store the path
              vector<array<int,2>> path;
-
+            multi_agent_planning::path shortest_path;
+            geometry_msgs::Pose2D node_pos;
+             
              // Assign the current node's x and y position
              int c_x=current_node.x;
              int c_y=current_node.y;
 
+             node_pos.x=current_node.x;
+             node_pos.y=current_node.y;
+             node_pos.theta=0;
              // Backtrack the path till you reach the start node which has it's parent (-1,-1)
              while (c_x>=0 and c_y>=0)
              {
              	// Push the node coordinates into the path vector
                  path.push_back({c_x,c_y});
+                 shortest_path.nodes.push_back(node_pos);
                  cout<<"("<<c_x<<","<<c_y<<")";
 
                  // Extract the coordinates of the parent from closed list 	
@@ -117,7 +124,7 @@ vector<array<int,2>> A_star(roadmap r1,int start_x,int start_y, int goal_x, int 
                  c_y=py;
                  
              }
-             return path;
+             return shortest_path;
              
          }
 
@@ -238,6 +245,7 @@ bool Decentralized_planner::get_plan(multi_agent_planning::plan_request::Request
  
  roadmap r1;
  vector<array<int,2>> path;
+ multi_agent_planning::path s_path;
  start_pos[0]=req.id;
  int i=0;
  // This condition is set to update the value of the start state and then execute the planner
@@ -248,10 +256,10 @@ bool Decentralized_planner::get_plan(multi_agent_planning::plan_request::Request
  i++;
  ros::spinOnce(); 
  }
- path=A_star(r1,start_pos[1],start_pos[2],req.goal_x,req.goal_y);
- ROS_INFO("%d",path.size());
+ s_path=A_star(r1,start_pos[1],start_pos[2],req.goal_x,req.goal_y);
+
  flag=0;
- res.success=true;
+ res.shortest_path=s_path;
  return true;
 
 }

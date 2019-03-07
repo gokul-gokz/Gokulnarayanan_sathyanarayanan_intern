@@ -52,6 +52,7 @@ add_message_files(
   FILES
   robot_state.msg
   Robot_state.msg
+  path.msg
   
 )
 

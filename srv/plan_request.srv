@@ -2,4 +2,4 @@ int32 id
 int32 goal_x
 int32 goal_y
 ---
-bool success
+path shortest_path
