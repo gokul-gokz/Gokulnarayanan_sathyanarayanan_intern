@@ -1,7 +1,7 @@
 #include "ros/ros.h"
 #include "multi_agent_planning/goal.h"
 #include "multi_agent_planning/plan_request.h"
-#include "multi_agent_planning/robot_state.h"
+#include "multi_agent_planning/Robot_state.h"
 #include "std_msgs/Int32MultiArray.h"
 #include "std_msgs/MultiArrayLayout.h"
 #include "std_msgs/MultiArrayDimension.h"
@@ -11,8 +11,9 @@ class agent
 {
 	public:
 		ros::NodeHandle nh_;
-		int id;
-		int start_position[2];
+		//int id;
+		//int start_position[2];
+		multi_agent_planning::Robot_state rs;
 		int goal_position[2];
 		multi_agent_planning::plan_request p_r;
 		

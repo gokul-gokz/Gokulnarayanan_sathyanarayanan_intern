@@ -2,13 +2,11 @@
 #include "iostream"
 #include <queue>
 #include <array>
-#include "multi_agent_planning/robot_state.h"
+#include "multi_agent_planning/Robot_state.h"
 #include "multi_agent_planning/plan_request.h"
 #include "multi_agent_planning/roadmap.hpp"
 #include "multi_agent_planning/node.h"
-#include "std_msgs/Int32MultiArray.h"
-#include "std_msgs/MultiArrayLayout.h"
-#include "std_msgs/MultiArrayDimension.h"
+
 //#include "multi_agent_planning/astar.h"
 
 
@@ -185,7 +183,7 @@ public:
 	//void initializesubscriber();
 	void initializeservice();
 	
-	void positionCallback(const multi_agent_planning::robot_state::ConstPtr & msg);
+	void positionCallback(const multi_agent_planning::Robot_state::ConstPtr & msg);
     //prototype for callback for example service
     bool get_plan(multi_agent_planning::plan_request::Request &req,
 			  multi_agent_planning::plan_request::Response &res);
@@ -199,11 +197,6 @@ Decentralized_planner::Decentralized_planner(ros::NodeHandle* nodehandle):nh_(*n
 	
 }
 
-// void Decentralized_planner::initializesubscriber()
-// {
-// 	ROS_INFO("Initializing subscriber for robot position");
-// 	get_start_position=nh_.subscribe("/agent_feedback", 1, &Decentralized_planner::positionCallback,this);
-// }
 
 void Decentralized_planner::initializeservice()
 {
@@ -211,14 +204,9 @@ void Decentralized_planner::initializeservice()
 	Plan_server=nh_.advertiseService("get_plan",&Decentralized_planner::get_plan,this);
 }
 
-// void Decentralized_planner::initializePublisher()
-// {
-//     ROS_INFO("Initializing Publishers");
-//     robot_state_publisher = nh_.advertise<std_msgs::Int32MultiArray>("agent_feedback", 1, true); 
-    
-// }
+
 int flag =0;
-void Decentralized_planner::positionCallback(const multi_agent_planning::robot_state::ConstPtr & msg)
+void Decentralized_planner::positionCallback(const multi_agent_planning::Robot_state::ConstPtr & msg)
 {   
 
 	// int i=0;
@@ -227,8 +215,8 @@ void Decentralized_planner::positionCallback(const multi_agent_planning::robot_s
      if(start_pos[0] == msg->id)
      {
 	      ROS_INFO("subscriber called");  
-         start_pos[1] = msg->current_position_x;
-         start_pos[2] = msg->current_position_y;
+         start_pos[1] = msg->pose.x;
+         start_pos[2] = msg->pose.y;
          ROS_INFO("%ld",start_pos[0]);
          ROS_INFO("%ld",start_pos[1]);
          ROS_INFO("%ld",start_pos[2]);
@@ -237,23 +225,11 @@ void Decentralized_planner::positionCallback(const multi_agent_planning::robot_s
          get_start_position.shutdown();
         }
         
-    
-        
-        
-		
-	// 		}
-    // if(start_pos[0]==*array)
-    // {
-    //     start_pos[1]=(*array)+1;
-    //     start_pos[2]=(*array)+2;
-    // }
-
-
-
+    	
 	return;
 }
 
-// roadmap::roadmap r1(10,10,1);
+
 bool Decentralized_planner::get_plan(multi_agent_planning::plan_request::Request &req,
 			  multi_agent_planning::plan_request::Response &res)
 {
@@ -268,14 +244,13 @@ bool Decentralized_planner::get_plan(multi_agent_planning::plan_request::Request
  while(i<3)
  {
  get_start_position=nh_.subscribe("/agent_feedback", 1000, &Decentralized_planner::positionCallback,this);
- ros::topic::waitForMessage<multi_agent_planning::robot_state>("/agent_feedback");
+ ros::topic::waitForMessage<multi_agent_planning::Robot_state>("/agent_feedback");
  i++;
  ros::spinOnce(); 
  }
  path=A_star(r1,start_pos[1],start_pos[2],req.goal_x,req.goal_y);
+ ROS_INFO("%d",path.size());
  flag=0;
- 
- // cout<<path.size();
  res.success=true;
  return true;
 
@@ -291,7 +266,5 @@ int main(int argc, char **argv)
 	ros::NodeHandle n;
 	Decentralized_planner p1(&n);
 	ros::spin();
-	
-	
 	return 0;
 }

@@ -2,10 +2,13 @@
 #include "cstring"
 agent::agent(ros::NodeHandle* nodehandle):nh_(*nodehandle)
 {
+	int id;
 	nh_.getParam("id", id);
-	std::cout<<id;
-	nh_.getParam("start_position_x", start_position[0]);
-	nh_.getParam("start_position_y", start_position[1]);
+	rs.id=id;
+	std::cout<<rs.id;
+	nh_.getParam("start_position_x", rs.pose.x);
+	nh_.getParam("start_position_y", rs.pose.y);
+	nh_.getParam("start_position_yaw", rs.pose.theta);
 	initialize_robot_statepublisher();
 	initialize_update_goal_service();
 }
@@ -13,7 +16,7 @@ agent::agent(ros::NodeHandle* nodehandle):nh_(*nodehandle)
 void agent::initialize_robot_statepublisher()
 {
 	ROS_INFO("Initializing Robot state Publishers");
-    robot_state_publisher = nh_.advertise<multi_agent_planning::robot_state>("agent_feedback", 1, true); 
+    robot_state_publisher = nh_.advertise<multi_agent_planning::Robot_state>("agent_feedback", 1, true); 
  }
 
  void agent::initialize_update_goal_service()
@@ -29,7 +32,7 @@ bool agent::update_agent_goal(multi_agent_planning::goal::Request &req,
 	goal_position[1]=req.goal_y;
 	ros::service::waitForService("/get_plan");
 	request_plan_client = nh_.serviceClient<multi_agent_planning::plan_request>("/get_plan");
-	p_r.request.id=id;
+	p_r.request.id=rs.id;
 	p_r.request.goal_x=goal_position[0];
 	p_r.request.goal_y=goal_position[1];
 	if (request_plan_client.call(p_r))
@@ -53,10 +56,11 @@ int main(int argc, char **argv)
 	
 	while (ros::ok())
 	{
-		multi_agent_planning::robot_state msg;
-		msg.id=a1.id;
-		msg.current_position_x=a1.start_position[0];
-		msg.current_position_y=a1.start_position[1];
+		multi_agent_planning::Robot_state msg;
+		msg.id=a1.rs.id;
+		msg.pose.x=a1.rs.pose.x;
+		msg.pose.y=a1.rs.pose.y;
+		msg.pose.theta=a1.rs.pose.theta;
 		// position.data.clear();
 
 		// position.data.push_back(a1.id);
