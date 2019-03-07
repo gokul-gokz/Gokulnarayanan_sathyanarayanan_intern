@@ -144,7 +144,7 @@ include_directories(
 
  add_executable(temp src/planner.cpp)
  add_executable(agent src/agent.cpp)
- add_executable(vis src/vis_test.cpp)
+ 
 
 ## Rename C++ executable without prefix
 ## The above recommended prefix causes long target names, the following renames the
@@ -164,8 +164,7 @@ include_directories(
 
  add_dependencies(temp ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
  add_dependencies(agent ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
- add_dependencies(vis ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
-
+ 
 ## Specify libraries to link a library or executable target against
  target_link_libraries(temp
    ${catkin_LIBRARIES}
@@ -173,9 +172,7 @@ include_directories(
  target_link_libraries(agent
    ${catkin_LIBRARIES}
  )
- target_link_libraries(vis
-   ${catkin_LIBRARIES}
- )
+ 
 
 #############
 ## Install ##

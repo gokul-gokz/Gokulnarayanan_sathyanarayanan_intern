@@ -5,6 +5,8 @@
 #include "std_msgs/Int32MultiArray.h"
 #include "std_msgs/MultiArrayLayout.h"
 #include "std_msgs/MultiArrayDimension.h"
+#include <visualization_msgs/Marker.h>
+
 
 
 class agent
@@ -16,7 +18,7 @@ class agent
 		multi_agent_planning::Robot_state rs;
 		int goal_position[2];
 		multi_agent_planning::plan_request p_r;
-		
+		multi_agent_planning::path s_p;
 		ros::ServiceServer update_goal;
 		ros::ServiceClient request_plan_client;
 
@@ -27,5 +29,6 @@ class agent
 		void initialize_update_goal_service();
 		bool update_agent_goal(multi_agent_planning::goal::Request &req,
 			  multi_agent_planning::goal::Response &res);
+		void visualization();
 
 };

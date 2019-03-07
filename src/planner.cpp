@@ -104,12 +104,13 @@ multi_agent_planning::path A_star(roadmap r1,int start_x,int start_y, int goal_x
              int c_x=current_node.x;
              int c_y=current_node.y;
 
-             node_pos.x=current_node.x;
-             node_pos.y=current_node.y;
-             node_pos.theta=0;
+             
              // Backtrack the path till you reach the start node which has it's parent (-1,-1)
              while (c_x>=0 and c_y>=0)
              {
+                node_pos.x=c_x;
+                node_pos.y=c_y;
+                node_pos.theta=0;
              	// Push the node coordinates into the path vector
                  path.push_back({c_x,c_y});
                  shortest_path.nodes.push_back(node_pos);
@@ -257,9 +258,11 @@ bool Decentralized_planner::get_plan(multi_agent_planning::plan_request::Request
  ros::spinOnce(); 
  }
  s_path=A_star(r1,start_pos[1],start_pos[2],req.goal_x,req.goal_y);
-
- flag=0;
- res.shortest_path=s_path;
+ for (int k=0;k<s_path.nodes.size();k++)
+    {
+        ROS_ERROR("x=%f",s_path.nodes[k].x);
+        ROS_ERROR("y=%f",s_path.nodes[k].y);}
+         res.shortest_path=s_path;
  return true;
 
 }
