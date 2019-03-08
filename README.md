@@ -8,6 +8,8 @@ This repository contains the code for Multi agent path planning using decentrali
 2. catkin make
 #### Agent server launch
    1. Inorder to launch the multi agent server and rviz visualization. Run the command ``` roslaunch multi_agent_planning multiagent.launch  ``` . This loads two agents with first agent having id 1,start position(0,0,0) and other agent  having id 2 and start postion(5,5,0). This also opens rviz with preset config for visualization . But currently it will be empty. The current position is displayed in the topic /agent_feedback.
+   
+   2. Start position of the agent are loaded from the config file. To change the start position of agent1 , ``` open config/ agent1_info.yaml ```. Similarly for agent 2 ``` open config/ agent1_info.yaml ```
 
 #### Decentralized planner launch
    2. To launch the planer with A*. Run the command ``` rosrun multi_agent_planning planner ```. This will launch the /get plan service.
