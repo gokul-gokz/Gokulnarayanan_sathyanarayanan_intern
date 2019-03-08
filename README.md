@@ -3,7 +3,7 @@
 This repository contains the code for Multi agent path planning using decentralized approach.
 
 ### Directory and File structure:
-### **include
+### include
 
   **1. roadmap.h**               - creates a 4 connected roadmap of 10x10 grid of nodes using adjacency list representation.
   
@@ -61,3 +61,17 @@ This repository contains the code for Multi agent path planning using decentrali
 ![Agent2_path](https://github.com/gokul-gokz/Gokulnarayanan_sathyanarayanan_intern/blob/master/images/agent1_2.png )
 
 
+#### Changing goal for agent1:
+   1. Open the /src/agent1_goal.cpp and modify the ``` g.request.goal_x = 5;  g.request.goal_y = 5;   g.request.goal_theta =0; ```
+  
+  2.```rosservice call /agent1/agent/update_goal "goal_x: 0
+goal_y: 0
+goal_theta: 0" ```
+
+#### Changing goal for agent2:
+   1. Open the /src/agent2_goal.cpp and modify the ``` g.request.goal_x = 5;  g.request.goal_y = 5;   g.request.goal_theta =0; ```
+  
+  2.```rosservice call /agent2/agent/update_goal "goal_x: 0
+goal_y: 0
+goal_theta: 0" ```
+ 
