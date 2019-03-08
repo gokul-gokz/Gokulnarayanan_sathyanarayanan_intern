@@ -40,6 +40,8 @@ goal_theta: 0" ```
 goal_y: 0
 goal_theta: 0" ```
  
+ ##### Note: 
+  The agent will always start the path planning from the start position.
  
  ### Directory and File structure:
 ### include
