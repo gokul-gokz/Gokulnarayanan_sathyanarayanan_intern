@@ -50,7 +50,7 @@ find_package(catkin REQUIRED COMPONENTS
 ## Generate messages in the 'msg' folder
 add_message_files(
   FILES
-  robot_state.msg
+  
   Robot_state.msg
   path.msg
   
@@ -108,10 +108,10 @@ generate_messages(
 ## CATKIN_DEPENDS: catkin_packages dependent projects also need
 ## DEPENDS: system dependencies of this project that dependent projects also need
 catkin_package(
-#  INCLUDE_DIRS include
-#  LIBRARIES multi_agent_planning
-#  CATKIN_DEPENDS roscpp
-#  DEPENDS system_lib
+ INCLUDE_DIRS include
+ LIBRARIES multi_agent_planning 
+ CATKIN_DEPENDS roscpp
+ DEPENDS system_lib
 )
 
 ###########
@@ -126,15 +126,14 @@ include_directories(
 )
 
 ## Declare a C++ library
-# add_library(${PROJECT_NAME}
+# add_library(multi_agent_planning
 #    src/node.cpp
 #  )
 
 ## Add cmake target dependencies of the library
 ## as an example, code may need to be generated before libraries
 ## either from message generation or dynamic reconfigure
-# add_dependencies(${PROJECT_NAME} ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
-
+ 
 ## Declare a C++ executable
 ## With catkin_make all packages are built within a single CMake context
 ## The recommended prefix ensures that target names across packages don't collide
@@ -142,7 +141,7 @@ include_directories(
 # add_executable(create_roadmap src/roadmap.cpp)
 
 
- add_executable(temp src/planner.cpp)
+ add_executable(planner src/Decentralized_planner_main.cpp)
  add_executable(agent src/agent.cpp)
  
 
@@ -162,15 +161,14 @@ include_directories(
  #  ${catkin_LIBRARIES}
  #)
 
- add_dependencies(temp ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
- add_dependencies(agent ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
+ add_dependencies(planner ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
  
 ## Specify libraries to link a library or executable target against
- target_link_libraries(temp
-   ${catkin_LIBRARIES}
+ target_link_libraries(planner
+   ${catkin_LIBRARIES} ${multi_agent_planning_LIBRARIES}
  )
  target_link_libraries(agent
-   ${catkin_LIBRARIES}
+   ${catkin_LIBRARIES} ${multi_agent_planning_LIBRARIES}
  )
  
 

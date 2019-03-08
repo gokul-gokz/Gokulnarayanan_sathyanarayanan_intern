@@ -1,3 +1,5 @@
+
+
 #include "multi_agent_planning/node.h"
 
 
@@ -27,3 +29,4 @@ bool node:: operator==(const node& other)const
 	{
 	    return(x==other.x and y==other.y);
 	}
+
