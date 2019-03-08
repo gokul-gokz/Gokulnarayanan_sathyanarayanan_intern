@@ -79,11 +79,11 @@ goal_theta: 0" ```
 
    **1. path.msg** -  custom message to store the path
    
-   **2. Robot_state.msg ** - custom message to publish the state of the agent
+   **2. Robot_state.msg** - custom message to publish the state of the agent
     
 ### srv
 
-   **1. goal.srv ** - service file requesting and responding to a goal.
+   **1. goal.srv** - service file requesting and responding to a goal.
    
-   **2. plan_request.srv ** - service file requesting a plan.
+   **2. plan_request.srv** - service file requesting a plan.
                     
