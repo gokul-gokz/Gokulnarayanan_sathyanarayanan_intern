@@ -16,7 +16,7 @@ int main(int argc, char **argv)
 		msg.id=a1.rs.id;
 		msg.pose.x=a1.rs.pose.x;
 		msg.pose.y=a1.rs.pose.y;
-		msg.pose.theta=a1.rs.pose.theta;
+    msg.pose.theta=a1.rs.pose.theta;
 		
 		a1.robot_state_publisher.publish(msg);
 		ros::spinOnce();

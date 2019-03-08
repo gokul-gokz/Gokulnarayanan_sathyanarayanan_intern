@@ -137,9 +137,16 @@ bool Decentralized_planner::get_plan(multi_agent_planning::plan_request::Request
  //Create a planner object
  path_planner p1;
 
- //Call the A-star path planner tby sending the start and goal position
- s_path=p1.A_star(r1,start_pos.pose.x,start_pos.pose.y,req.goal_x,req.goal_y);
-
+ if(req.goal_x>SIZE_X or req.goal_y>SIZE_Y or req.goal_x<0 or req.goal_y<0)
+ {
+  ROS_ERROR("INVALID GOAL CONDITIONS");
+  return false;
+ }
+  else
+  {
+  //Call the A-star path planner tby sending the start and goal position
+  s_path=p1.A_star(r1,start_pos.pose.x,start_pos.pose.y,req.goal_x,req.goal_y);
+  }
  // Store the shortest path in the response message
  res.shortest_path=s_path;
 

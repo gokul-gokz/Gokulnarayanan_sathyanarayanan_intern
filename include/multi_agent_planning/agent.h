@@ -1,20 +1,25 @@
 #ifndef AGENT_H
 #define AGENT_H
 
-#include "ros/ros.h"
-#include "multi_agent_planning/goal.h"
-#include "multi_agent_planning/plan_request.h"
-#include "multi_agent_planning/Robot_state.h"
-#include "std_msgs/Int32MultiArray.h"
-#include "std_msgs/MultiArrayLayout.h"
-#include "std_msgs/MultiArrayDimension.h"
-#include <visualization_msgs/Marker.h>
+//cpp
 #include <iostream>
 #include <string>
 
+//ROS
+#include "ros/ros.h"
+#include <visualization_msgs/Marker.h>
+
+//User defined msgs and srv
+#include "multi_agent_planning/goal.h"
+#include "multi_agent_planning/plan_request.h"
+#include "multi_agent_planning/Robot_state.h"
+
+
+
+
 
 /**
- * @brief Agent class implementaion
+ * @brief Agent class implementation
 */
 
 class agent
@@ -137,8 +142,7 @@ void agent::visualization_nodes()
 
   ros::Rate r(15);
 
-  float f = 0.0;
-  int i=0;
+  
   while (ros::ok())
   {
   	// Create the visualiztion msgs
@@ -170,7 +174,7 @@ void agent::visualization_nodes()
    
 
     // Nodes are red
-    points.color.r = 1.0f;
+    points.color.r = 1.0;
     points.color.a = 1.0;
 
     // Path will be displayed in blue
@@ -234,7 +238,7 @@ void agent::visualization_nodes()
    marker_publisher.publish(line_strip);
  
     r.sleep();
-    f += 0.04;
+    
   	
     ros::spinOnce(); 
 	  
@@ -271,8 +275,8 @@ bool agent::update_agent_goal(multi_agent_planning::goal::Request &req,
      s_p=p_r.response.shortest_path;
      
      // Update the current position
-     // rs.pose.x=goal_position[0];
-     // rs.pose.y=goal_position[1];
+     //rs.pose.x=goal_position[0];
+     //rs.pose.y=goal_position[1];
      //Visualize the path
      visualization_nodes();
      return true;	
