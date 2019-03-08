@@ -1,4 +1,5 @@
 int32 goal_x
 int32 goal_y
+int32 goal_theta
 ---
 bool success

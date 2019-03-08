@@ -143,6 +143,8 @@ include_directories(
 
  add_executable(planner src/Decentralized_planner_main.cpp)
  add_executable(agent src/agent.cpp)
+ add_executable(agent1_goal src/agent1_goal.cpp)
+ add_executable(agent2_goal src/agent2_goal.cpp)
  
 
 ## Rename C++ executable without prefix
@@ -170,7 +172,13 @@ include_directories(
  target_link_libraries(agent
    ${catkin_LIBRARIES} ${multi_agent_planning_LIBRARIES}
  )
+ target_link_libraries(agent1_goal
+   ${catkin_LIBRARIES} ${multi_agent_planning_LIBRARIES}
+ )
  
+ target_link_libraries(agent2_goal
+   ${catkin_LIBRARIES} ${multi_agent_planning_LIBRARIES}
+ )
 
 #############
 ## Install ##

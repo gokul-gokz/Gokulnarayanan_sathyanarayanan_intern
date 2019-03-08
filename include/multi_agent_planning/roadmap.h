@@ -5,8 +5,8 @@
 #include <utility>
 #include <array>
 
-#define SIZE_X 10
-#define SIZE_Y 10
+#define SIZE_X 11
+#define SIZE_Y 11
 #define EDGE_W 10 
 
 using namespace std;
@@ -48,7 +48,7 @@ public:
 	    cout<<adjList[0].size();
 	    cout<<endl;
 		//Print the map
-		for(int i=0;i<100;i++)
+		for(int i=0;i<121;i++)
 		{
 			vector<int> x;
 			cout<<endl;
@@ -60,7 +60,7 @@ public:
 	
 	vector<array<int,3>> neighbours(int n[2])
 	{
-	    int node_position=n[0]+n[1]*10;
+	    int node_position=n[0]+n[1]*11;
 	    return adjList[node_position];
 	}
 

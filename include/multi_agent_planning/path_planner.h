@@ -94,7 +94,7 @@ multi_agent_planning::path path_planner::A_star(roadmap r1,int start_x,int start
      Format:Expanded nodes-> {parent.x,parent.y,1}
      Initially all the values are set to zero
      3D array is used to provide fast lookup: 0(1)*/
-     int closed_list[10][10][3]={{0,0,0}};
+     int closed_list[11][11][3]={{0,0,0}};
           
      //Add the start node to open list
      open_list.push(s1);
